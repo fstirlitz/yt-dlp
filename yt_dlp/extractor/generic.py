@@ -3164,6 +3164,13 @@ class GenericIE(InfoExtractor):
         if sportbox_urls:
             return self.playlist_from_matches(sportbox_urls, video_id, video_title, ie=SportBoxIE.ie_key())
 
+        # Look for embedded Spotify player
+        spotify_urls = re.findall(
+            r'<iframe[^>]+src="(https?://open\.spotify.com/embed/[^"]+)"',
+            webpage)
+        if spotify_urls:
+            return self.playlist_from_matches(spotify_urls, video_id, video_title)
+
         # Look for embedded XHamster player
         xhamster_urls = XHamsterEmbedIE._extract_urls(webpage)
         if xhamster_urls:
